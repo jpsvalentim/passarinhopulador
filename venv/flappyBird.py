@@ -93,12 +93,13 @@ class Passaro:
         #desenha a imagem 
         imagem_rotacionada = pygame.transform.rotate(self.imagem, self.angulo)
         pos_centro_imagem = self.imagem.get_rect(topleft = (self.x, self.y)).center
-        rentagulo = imagem_rotacionada.get_rect(center=pos_centro_imagem)
-        tela.blit(imagem_rotacionada, rentagulo.topleft)
+        retangulo = imagem_rotacionada.get_rect(center=pos_centro_imagem)
+        tela.blit(imagem_rotacionada, retangulo.topleft)
 
 
     def get_mask(self):
-        pygame.mask.from_surface(self.imagem)
+        return pygame.mask.from_surface(self.imagem)
+
 
 
 
@@ -119,7 +120,7 @@ class Cano:
 
     def definir_altura(self):
         self.altura = random.randrange(50, 450)
-        self.pos_base = self.altura - self.CANO_TOPO.get_height()
+        self.pos_topo = self.altura - self.CANO_TOPO.get_height()
         self.pos_base = self.altura + self.DISTANCIA
 
 
@@ -132,8 +133,8 @@ class Cano:
 
     def colidir(self,passaro):
         passaro_mask = passaro.get_mask()
-        topo_mask = pygame.masK.from_surface(self.CANO_TOPO)
-        base_mask = pygame.masK.from_surface(self.CANO_BASE)
+        topo_mask = pygame.mask.from_surface(self.CANO_TOPO)
+        base_mask = pygame.mask.from_surface(self.CANO_BASE)
     
         distancia_topo = self.x - passaro.x, self.pos_topo - round(passaro.y)
         distancia_base = self.x - passaro.x, self.pos_base - round(passaro.y)
@@ -183,13 +184,13 @@ class Chao:
 
 def desenhar_tela(tela, passaros, canos, chao, pontos):
     tela.blit(IMAGEM_BACKGROUND,(0,0))
-    for passaro in passaros(tela):
+    for passaro in passaros:
         passaro.desenhar(tela)
     for cano in canos:
         cano.desenhar(tela)
 
-    texto = FONTE_PONTOS.render(f"Potuação: {pontos}", 1,(255,255,255))
-    tela.blit (texto,(TELA_LARGURA - 10 - texto.get._width(), 10))
+    texto = FONTE_PONTOS.render(f"Pontuação: {pontos}", 1,(255,255,255))
+    tela.blit(texto,(TELA_LARGURA - 10 - texto.get_width(),10))
     chao.desenhar(tela)
     pygame.display.update()
 
@@ -249,7 +250,7 @@ def main():
         desenhar_tela(tela, passaros, canos, chao, pontos)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
 
 
