@@ -2,6 +2,7 @@ import pygame
 import os
 import random
 
+
 TELA_LARGURA = 500
 TELA_ALTURA = 800
 
@@ -199,7 +200,37 @@ def main():
     canos = [Cano(700)]
     tela = pygame.display.set_mode((TELA_LARGURA,TELA_ALTURA))
     pontos = 0
-    relogio
+    relogio = pygame.time.Clock()
+    
+
+    rodando = True
+    while rodando:
+        relogio.tick(30)
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                rodando = False
+                pygame.quit()
+                quit()
+
+            if evento.type == pygame.KEYDOWN:
+                if evento.key == pygame.K_SPACE:
+                    for passaro in passaros:
+                        passaro.pular()
+
+        for passaro in passaros:
+            passaro.mover()
+        chao.mover()
+
+        adicionar_cano = False
+        for cano in canos:
+            for i, passaro in enumerate(passaros):
+                if cano.colidir(passaros):
+                    passaros(i)
+                    
+
+
+
+        desenhar_tela(tela, passaros, canos, chao, pontos)
 
 
 
