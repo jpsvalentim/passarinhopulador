@@ -26,7 +26,7 @@ class Passaro:
 
     def __init__(self, x,y):
         self.x = x
-        self.y = yu
+        self.y = y
         self.angulo = 0
         self.velocidade = 0
         self.altura = self.y
@@ -51,12 +51,12 @@ class Passaro:
         self.y += deslocamento
     
     #o angulo do passaro
-    if deslocamento < 0 or self.y < (self.altura + 50):
-        if self.angulo < self.ROTACAO_MAXIMA:
-            self.angulo = self.ROTACAO_MAXIMA
-    else:
-        if self.angulo > -90:
-            self.angulo -= self.VELOCIDADE_ROTACAO
+        if deslocamento < 0 or self.y < (self.altura + 50):
+            if self.angulo < self.ROTACAO_MAXIMA:
+                self.angulo = self.ROTACAO_MAXIMA       
+        else:
+            if self.angulo > -90:
+                self.angulo -= self.VELOCIDADE_ROTACAO
 
     def desenhar(self, tela):
         #definir qual imagem do passaro vai usar
@@ -105,7 +105,7 @@ class Cano:
     DISTANCIA = 200
     VELOCIDADE = 5
 
-    def __init__(self):
+    def __init__(self, x):
         self.x = x
         self.altura = 0 
         self.pos_topo = 0
@@ -177,8 +177,29 @@ class Chao:
         tela.blit(self.IMAGEM,(self.x1, self.y))
         tela.blit(self.IMAGEM,(self.x2, self.y))
 
-    
 
+
+
+def desenhar_tela(tela, passaros, canos, chao, pontos):
+    tela.blit(IMAGEM_BACKGROUND,(0,0))
+    for passaro in passaros(tela):
+        passaro.desenhar(tela)
+    for cano in canos:
+        cano.desenhar(tela)
+
+    texto = FONTE_PONTOS.render(f"Potuação: {pontos}", 1,(255,255,255))
+    tela.blit (texto,(TELA_LARGURA - 10 - texto.get._width(), 10))
+    chao.desenhar(tela)
+    pygame.display.update()
+
+
+def main():
+    passaros = [Passaro(230, 350)]
+    Chao = Chao(730)
+    canos = [Cano(700)]
+    tela = pygame.display.set_mode((TELA_LARGURA,TELA_ALTURA))
+    pontos = 0
+    relogio
 
 
 
