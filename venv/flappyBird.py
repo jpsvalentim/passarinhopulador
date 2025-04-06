@@ -40,21 +40,21 @@ class Passaro:
         self.altura = self.y
     
     def mover(self):
-    #calcular o deslocamento
         self.tempo += 1
-        deslocamento = -1.5 * (self.tempo**2) + self.velocidade * self.tempo
+        deslocamento = self.velocidade * self.tempo + 1.5 * (self.tempo ** 2)
 
-    #restringir o deslocamento 
         if deslocamento > 16:
             deslocamento = 16
-        elif deslocamento<0:
-            deslocamento-=2
+
+        if deslocamento < 0:
+            deslocamento -= 2  # efeito de impulso extra para cima
+
         self.y += deslocamento
-    
-    #o angulo do passaro
+
+        # ângulo do pássaro
         if deslocamento < 0 or self.y < (self.altura + 50):
             if self.angulo < self.ROTACAO_MAXIMA:
-                self.angulo = self.ROTACAO_MAXIMA       
+                self.angulo = self.ROTACAO_MAXIMA
         else:
             if self.angulo > -90:
                 self.angulo -= self.VELOCIDADE_ROTACAO
@@ -242,9 +242,17 @@ def main():
         for cano in remover_canos:
             canos.remove(cano)
         
-        for i, passaro in enumerate(passaros):
-            if(passaro.y +passaro.imagem.get_height())> chao.y or passaro.y <0:
-                passaros.pop(i)
+       # Remover pássaros que bateram no chão ou voaram para fora da tela
+        passaros_restantes = []
+        for passaro in passaros:
+            if (passaro.y + passaro.imagem.get_height()) < chao.y and passaro.y >= 0:
+                passaros_restantes.append(passaro)
+
+        passaros = passaros_restantes
+
+        # Encerrar o jogo se não houver mais pássaros
+        if len(passaros) == 0:
+            rodando = False
 
 
         desenhar_tela(tela, passaros, canos, chao, pontos)
