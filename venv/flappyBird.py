@@ -242,9 +242,17 @@ def main():
         for cano in remover_canos:
             canos.remove(cano)
         
-        for i, passaro in enumerate(passaros):
-            if(passaro.y +passaro.imagem.get_height())> chao.y or passaro.y <0:
-                passaros.pop(i)
+       # Remover pássaros que bateram no chão ou voaram para fora da tela
+        passaros_restantes = []
+        for passaro in passaros:
+            if (passaro.y + passaro.imagem.get_height()) < chao.y and passaro.y >= 0:
+                passaros_restantes.append(passaro)
+
+        passaros = passaros_restantes
+
+        # Encerrar o jogo se não houver mais pássaros
+        if len(passaros) == 0:
+            rodando = False
 
 
         desenhar_tela(tela, passaros, canos, chao, pontos)
